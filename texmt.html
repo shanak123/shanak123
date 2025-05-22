@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Multi Offer Generator</title>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background: linear-gradient(to right, #dbeafe, #eef2ff);
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .box {
+      background: #fff;
+      padding: 40px 30px;
+      border-radius: 20px;
+      text-align: center;
+      width: 420px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    }
+    h2 {
+      color: #3366ff;
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+    h3 {
+      font-size: 22px;
+      color: #444;
+      margin: 0;
+    }
+    p {
+      font-size: 16px;
+      color: #555;
+    }
+    .btn {
+      margin-top: 20px;
+      background-color: #3366ff;
+      color: white;
+      padding: 14px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      width: 100%;
+    }
+    .btn:disabled {
+      background-color: gray;
+      cursor: not-allowed;
+    }
+    #countdown {
+      margin-top: 15px;
+      font-weight: bold;
+      font-size: 18px;
+      display: none;
+      color: #444;
+    }
+    .footer {
+      font-size: 14px;
+      color: #666;
+      margin-top: 25px;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>Offer</h2>
+    <h3>Get Offers</h3>
+    <p>Offer List will automatically download in 20 seconds after each click.</p>
+    <div style="margin-top: 15px; font-weight: bold;">Get Offers List</div>
+    <button class="btn" id="getBtn" onclick="getOffer()">GET YOUR OFFER LINK</button>
+    <div id="countdown">Please wait...</div>
+    <div class="footer">
+      Links Remaining: <b id="remaining">3</b> | Links Opened: <b id="opened">0</b><br>
+      <small>Offers Finder System</small>
+    </div>
+  </div>
+
+  <script>
+    const links = [
+      "https://www.profitableratecpm.com/ffdh9utr?key=e9b089f6fb20040a099500eaa2cdd614",
+      "https://best.aliexpress.com/?browser_redirect=true",
+      "https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://www.daraz.lk/&ved=2ahUKEwi28cP1g7aNAxWOzjgGHVIqKK4Qjjh6BAgJEAE&usg=AOvVaw3uiFCYVcbbdmKNajci7Li2"
+    ];
+
+    let current = 0;
+
+    function getOffer() {
+      if (current >= links.length) {
+        alert("No more offers left.");
+        return;
+      }
+
+      const btn = document.getElementById("getBtn");
+      const countdownEl = document.getElementById("countdown");
+      const remainingEl = document.getElementById("remaining");
+      const openedEl = document.getElementById("opened");
+
+      // Open current offer link
+      window.open(links[current], "_blank");
+
+      // Cooldown start
+      btn.disabled = true;
+      countdownEl.style.display = "block";
+
+      let seconds = 20;
+      countdownEl.innerText = `Generating next offer in ${seconds}s...`;
+
+      const interval = setInterval(() => {
+        seconds--;
+        countdownEl.innerText = `Generating next offer in ${seconds}s...`;
+        if (seconds <= 0) {
+          clearInterval(interval);
+          current++;
+
+          openedEl.innerText = current;
+          remainingEl.innerText = links.length - current;
+
+          if (current >= links.length) {
+            countdownEl.innerText = "All offers completed.";
+            btn.disabled = true;
+          } else {
+            countdownEl.style.display = "none";
+            btn.disabled = false;
+          }
+        }
+      }, 1000);
+    }
+  </script>
+</body>
+</html>
